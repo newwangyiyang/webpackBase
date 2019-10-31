@@ -1,0 +1,22 @@
+:root {
+    --mainColor: yellowgreen;
+}
+body {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background: url('../imgs/one.jpg') no-repeat center / cover;
+}
+.box {
+    font-size: 40px;
+    color: var(--mainColor);
+    user-select: none;
+    background: url('../imgs/00321.jpg') no-repeat center;
+}
+.wrap {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

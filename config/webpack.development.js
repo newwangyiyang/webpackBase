@@ -22,6 +22,17 @@ module.exports = {
                 target: 'http://www.baidu.com',
                 pathRewrite: {'^/api': ''}
             }
+        },
+        before(app) {
+            app.get('/wyyApi/test', (req, res) => {
+                res.json({code: 0, msg: '请求成功', data: [{name: '王一扬'}]})
+            })
+        }
+    },
+    optimization: {
+        // 将公共代码抽离
+        runtimeChunk: {
+            name: 'runtime'
         }
     },
     module: {

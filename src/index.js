@@ -1,8 +1,7 @@
 import { join } from 'lodash-es'
-import name from '@/scripts/utils'
+import utils from '@/scripts/utils'
 import $ from 'jQuery'
-// 等价于 import name from 'src/scripts/utils.js'
-
+// 等价于 import utils from 'src/scripts/utils.js'
 
 import './style/index.css'
 function createElement() {
@@ -14,5 +13,6 @@ function createElement() {
 
 document.body.appendChild(createElement())
 $('.box').hide()
-console.log('utils导出的数据是: ', name)
+console.log('utils导出的数据是: ', utils.name)
+utils.getData()
 

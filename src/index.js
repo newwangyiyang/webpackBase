@@ -12,7 +12,7 @@ function createElement() {
 }
 
 document.body.appendChild(createElement())
-$('.box').hide()
+$('.box').fadeTo()
 console.log('utils导出的数据是: ', utils.name)
-utils.getData()
+// utils.getData()
 

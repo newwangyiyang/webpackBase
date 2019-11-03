@@ -11,11 +11,18 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const glob = require('glob')
 const PurifyCSSPlugin = require('purifycss-webpack')
 // 6、js压缩 
+const WebpackParallelUglifyPlugin = require('webpack-parallel-uglify-plugin')
+// 7、js scope tree shaking
+const WebpackDeepScopeAnalysisPlugin = require('webpack-deep-scope-plugin').default
+
+const argv = require('yargs-parser')(process.argv.slice(2))
+const mode = argv.mode || 'development'
 
 module.exports = {
     output: {
         filename: 'js/main.[hash].js',
-        path: resolve(__dirname, '../dist')
+        path: resolve(__dirname, '../dist'),
+        publicPath: './'
     },
     module: {
         rules: [
@@ -23,6 +30,13 @@ module.exports = {
                 test: /\.css$/,
                 use: [
                     MiniCssExtractPlugin.loader,
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            publicPath: '../', // 处理打包图片或字体路径问题
+                            hmr: mode === 'development',
+                        }
+                    },
                     {
                         loader: 'css-loader',
                         options: {sourceMap: true}
@@ -70,8 +84,10 @@ module.exports = {
         // css tree shaking
         new PurifyCSSPlugin({
             // node 路径扫描
-            paths: glob.sync(join(__dirname, '../src/*.html'))
+            paths: glob.sync(join(__dirname, 'dist/*.html'))
         }),
+        // js scope tree shaking
+        new WebpackDeepScopeAnalysisPlugin(),
         // 压缩css
         new OptimizeCssAssetsWebpackPlugin({
             parallel: true
@@ -89,8 +105,8 @@ module.exports = {
                 beautify: false, //不需要格式化
                 comments: false //不保留注释
               },
+              warnings: false, // 在UglifyJs删除没有用到的代码时不输出警告
               compress: {
-                warnings: false, // 在UglifyJs删除没有用到的代码时不输出警告
                 drop_console: true, // 删除所有的 `console` 语句，可以兼容ie浏览器
                 collapse_vars: true, // 内嵌定义了但是只用到一次的变量
                 reduce_vars: true // 提取出出现多次但是没有定义成变量去引用的静态值

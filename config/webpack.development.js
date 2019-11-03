@@ -3,7 +3,8 @@ const webpack = require('webpack')
 module.exports = {
     output: {
         filename: 'main.js',
-        path: resolve(__dirname, '../dist')
+        path: resolve(__dirname, '../dist'),
+        publicPath: '/'
     },
     devtool: 'inline-source-map',
     devServer: {
